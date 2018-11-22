@@ -83,7 +83,55 @@
    
 </head>
 <body id="top-image">
+ <?PHP
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+        session_start();
+        if(isset($_SESSION['login']))
+        {
+        header("Location: HomePage.php");  
+        }  
+        ?>
 
+        <?PHP
+         require_once 'wrappers.php';
+         $name = "";
+         $pass ="";
+         $errormessage ="";
+         $query = "";
+         $row = "";
+         if(isset($_POST["username"])) 
+        {     
+         $name = $_POST["username"]; 
+        
+   
+        if(isset($_POST["password"])) 
+        {     
+         $password = $_POST["password"]; 
+        }
+          $query = check_password($name, $password);
+          $row = $query->fetch_array();
+          
+
+         if($row['userName'] == $name && $row['password'] == $password)
+         {
+          session_start();
+          $_SESSION['login'] = true;
+          $_SESSION['name'] = $_POST["username"];
+          $_SESSION['type'] = $check_type;
+         }
+         
+          
+          
+        else 
+         {
+         $errormessage = "Invalid username or password";
+         $name = $_POST["username"];
+         $pass = $_POST["password"];
+         }
+         }
+        ?>
         <center>
         <h1 id="grad1">
         <a class="button_example" href="Restaurant.php">Restaurants</a>
@@ -92,8 +140,6 @@
         <a class="button_example" href="Suggest.php">Suggest</a>
         <a class="button_example" href="HomePage.php">Home</a>
         <br>
-        <input type="text" placeholder="username" width="50">
-        <input type="text" placeholder="password" width="50">
         </h1>
         <br>
         <br>
@@ -103,18 +149,22 @@
         <br>
         <p style="color:white">Welcome to the Food Critics!</p><br>
         <p style="color:white">This website helps its users set up groups to decide on which restaurants to go to.</p>
-        <p style="color:white">Start by logging in or registering here:</p>
+        <p style="color:white">Start by logging in here:</p>
         <br>
         <br>
         <br>
         <br>
         <p style="color:white">Log In:</p>
-        <input type="text" placeholder="username" width="50"><br>
-        <input type="text" placeholder="password" width="50"><br>
+        <form method="post" action="Login.php">
+        <input type="text" placeholder="username" name = "username" width="50" value = <?PHP echo $name; ?> ><br>
+        <input type="text" placeholder="password" name = "password"  width="50" value = <?PHP echo $pass; ?> ><br>
+        <input type="submit" value="Log In">
+        </form>
+        <p style="color: red">
+        <?PHP echo $errormessage; ?>
+        </p>
+        
+ 
         </center>
 </body>
-<?php
-
-
-?>
 </html>

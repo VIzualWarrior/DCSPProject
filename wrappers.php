@@ -1,26 +1,32 @@
+
 <?php
+    
     function open_connection() {
-        $conn = new mysqli($hostname, $username, $password, $database);
-        if ($conn->connection_errno) {
-            echo "Error: Failed to make a MySQL connection, here is why: \n";
-            echo "Errno: " . $conn->connect_errno . "\n";
-            echo "Error: " . $conn->connect_error . "\n";
-            exit;
-        }
+    require_once "log_in.php";
+        $conn = new mysqli($hostname, $userName, $password, $database);
         return $conn;
+    }
+     // https://stackoverflow.com/questions/12272017/returning-multiple-rows-with-mysqli-and-arrays
+     // convert mysqli result to array of rows
+     function resultToArray($result) {
+        $rows = array();
+        while($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        return $rows;
     }
     // returns an array of rows for the output of the statement
     function get_array($stmt) {
         $conn = open_connection();
-        $result = $conn->query($stmt);
-        return $result->fetch_array();
+        $result = $conn->query($stmt) or trigger_error("Query Failed! SQL: $stmt - Error: ".mysqli_error($conn), E_USER_ERROR);
+        return resultToArray($result);
     }
     // performs a query that doesn't expect any output
     function do_query($stmt) {
         $conn = open_connection();
-        $conn->query($stmt);
+        $conn->query($stmt) or trigger_error("Query Failed! SQL: $stmt - Error: ".mysqli_error($conn), E_USER_ERROR);
     }
-    // ONLY checks if a user exists by username
+    // ONLY checks if a user exists by userName
     function check_user_record($userName) {
         $conn = open_connection();
         $conn->query("SELECT EXISTS(SELECT * 
@@ -30,11 +36,11 @@
         return $result->fetch_array();
     }
     function check_password($userID, $token) {
-        $conn = open_connectioN();
-        $conn->query("SELECT EXISTS(SELECT *
+        $conn = open_connection();
+        $result = $conn->query("SELECT EXISTS(SELECT *
                                     FROM Users
-                                    WHERE userID = $userID AND
-                                    `password` = $token)");
-        return $result->fetch_array();
+                                    WHERE userName = $userID AND
+                                    password = $token)");
+        return $result;
     }
 ?>

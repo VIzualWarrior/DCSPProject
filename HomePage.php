@@ -84,16 +84,28 @@
 </head>
 <body id="top-image">
 
+<?PHP
+include("class_definitions.php");
+session_start();
+$logstatus = "Log In";
+$log = "Login.php";
+if (isset($_SESSION['login'])){
+$name = $_SESSION['name'];
+$logstatus = "Log Out";
+$log = "Logout.php";
+
+ }
+?>
+
         <center>
         <h1 id="grad1">
         <a class="button_example" href="Restaurant.php">Restaurants</a>
         <a class="button_example" href="Groups.php">Groups</a>
         <a class="button_example" href="Vote.php">Vote</a>
         <a class="button_example" href="Suggest.php">Suggest</a>
-        <a class="button_example" href="Login.php">Log In</a>
+        <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
         <br>
-        <input type="text" placeholder="username" width="50">
-        <input type="text" placeholder="password" width="50">
+        <?PHP if (isset($_SESSION['name'])){ echo "Hello, '$name'!";} ?>
         </h1>
         <br>
         <br>
@@ -106,11 +118,11 @@
         <br>
         <br>
         <br>
-        <input type="text" name="RestaurantQuery" placeholder="Search for a restaurant here..."  size="100"><br>
+        <form action="searchResult.php" method="post">
+        <input type="text" name="query" placeholder="Search for a restaurant here..."  size="100"><br>
+        <input type="submit" value = "Search">
+        </form>
         </center>
 </body>
-<?php
 
-
-?>
 </html>
