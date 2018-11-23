@@ -18,6 +18,20 @@ function get_groups_from_user($userID) {
                         FROM GroupMembership 
                         WHERE userID = $userID");
 }
+// get get names of all groups that a user is in
+function get_group_names_from_user($userID) {
+    return get_array("SELECT groupName
+                        FROM Groups
+                        WHERE groupID IN (SELECT groupID
+                                            FROM GroupMembership
+                                            WHERE userID = $userID)");
+}
+// get group name from groupID
+function get_group_name_from_id($groupID) {
+    return get_array("SELECT groupName
+                    FROM Groups
+                    WHERE groupID = $groupID");
+}
 // return all attributes of a user with given id
 function get_user_details_from_id($userID) {
     return get_array("SELECT * 
@@ -117,6 +131,12 @@ function set_poll_closed($groupID) {
                 SET isOpen = 0 
                 WHERE groupID = $groupID");
 }
+// check if poll is open or closed
+function is_open($pollID) {
+    return get_array("SELECT isOpen
+                        FROM Polls
+                        WHERE pollID = $pollID");
+}
 // get all options to be voted on in poll
 function get_options_from_poll($pollID) {
     return get_array("SELECT pollOptionId 
@@ -141,5 +161,12 @@ function cast_vote($pollOptionID, $userID) {
                 VALUES ($pollOptionID, $userID)");
     return get_array("SELECT LAST_INSERT_ID()
                         FROM Vote");
+}
+// get list of users who have voted
+function get_users_voted($pollID) {
+    return get_array("SELECT V.userID
+                        FROM Votes V, PollOptions PO, Polls, PL
+                        WHERE V.pollOptionID = PO.pollOptionID AND
+                        PO.pollID = PL.pollID AND PL.pollID = $pollID");
 }
 ?>

@@ -26,6 +26,8 @@
             box-sizing: border-box;
         }
 
+        
+
         .button_example {
             border: 1px solid #72021c;
             width: 60px;
@@ -84,23 +86,23 @@
 </head>
 <body id="top-image">
  <?PHP
+        ob_start();
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
         session_start();
-        if(isset($_SESSION['login']))
-        {
-        header("Location: HomePage.php");  
-        }  
+   
         ?>
 
         <?PHP
-         require_once 'wrappers.php';
+         require_once 'class_definitions.php';
          $name = "";
          $pass ="";
          $errormessage ="";
          $query = "";
          $row = "";
+         $result = "";
+         $user = '';
          if(isset($_POST["username"])) 
         {     
          $name = $_POST["username"]; 
@@ -111,15 +113,19 @@
          $password = $_POST["password"]; 
         }
           $query = check_password($name, $password);
-          $row = $query->fetch_array();
+          $result = $query->fetch_array();
           
 
-         if($row['userName'] == $name && $row['password'] == $password)
+         if($result['userName'] == $name && $result['password'] == $password)
          {
           session_start();
+          $user = new User();
+          $user->retrieveUser($result['userID']);
           $_SESSION['login'] = true;
-          $_SESSION['name'] = $_POST["username"];
-          $_SESSION['type'] = $check_type;
+          $_SESSION['user'] = $user;
+          $_SESSION['name'] = $result['userName'];
+          $_SESSION['type'] = $result['isAdmin'];
+          header("Location: HomePage.php"); 
          }
          
           
@@ -157,7 +163,7 @@
         <p style="color:white">Log In:</p>
         <form method="post" action="Login.php">
         <input type="text" placeholder="username" name = "username" width="50" value = <?PHP echo $name; ?> ><br>
-        <input type="text" placeholder="password" name = "password"  width="50" value = <?PHP echo $pass; ?> ><br>
+        <input type="password" placeholder="password" name = "password"  width="50" value = <?PHP echo $pass; ?> ><br>
         <input type="submit" value="Log In">
         </form>
         <p style="color: red">

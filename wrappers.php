@@ -1,8 +1,7 @@
-
 <?php
     
     function open_connection() {
-    require_once "log_in.php";
+        include("log_in.php");
         $conn = new mysqli($hostname, $userName, $password, $database);
         return $conn;
     }
@@ -37,10 +36,9 @@
     }
     function check_password($userID, $token) {
         $conn = open_connection();
-        $result = $conn->query("SELECT EXISTS(SELECT *
+        $result = $conn->query("SELECT *
                                     FROM Users
-                                    WHERE userName = $userID AND
-                                    password = $token)");
-        return $result;
-    }
+                                    WHERE userName = '$userID' AND
+                                    `password` = '$token'");
+        return $result;    }
 ?>

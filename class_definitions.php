@@ -1,30 +1,26 @@
 <?php
-require_once("db_functions.php");
+include("db_functions.php");
 // factory class for creating or retrieving users
 // things that aren't likely to change over time will
 // be recorded as attributes in the class. Things that
-// are more volitile will stay in the database.
+// are more volatile will stay in the database.
 class User {
-    private $userID = 0;
-    private $username = "";
+    private $userID = -16;
+    private $userName = "";
     private $firstName = "";
     private $lastName = "";
     private $email = "";
     private $password = "";
     private $isAdmin = false;
-    //private $isLoggedIn = false; considering removing, as this will change frequently
-    function __construct() {
-    }
-    public static function createNewUser($username, $firstName, $lastName, $email, $password, $isAdmin, $isLoggedIn) {
+    public static function createNewUser($userName, $firstName, $lastName, $email, $password, $isAdmin) {
         $newUser = new User();
-        $newUser->username = $username;
+        $newUser->userName = $userName;
         $newUser->firstName = $firstName;
         $newUser->lastName = $lastName;
         $newUser->email = $email;
         $newUser->password = $password;
         $newUser->isAdmin = $isAdmin;
-        $newUser->isLoggedIn = $isLoggedIn;
-        $newUser->userID = create_user($username, $firstName, $lastName, $email, $password, $isAdmin, $isLoggedIn);
+        $newUser->userID = create_user($userName, $firstName, $lastName, $email, $password, $isAdmin);
         return $newUser;
     }
     public static function retrieveUser($userID) {
@@ -32,20 +28,22 @@ class User {
         
         $newUser->userID = $userID;
         $details = get_user_details_from_id($userID);
-        $newUser->username = $details["username"];
+        $newUser->userName = $details["userName"];
         $newUser->firstName = $details["firstName"];
         $newUser->lastName = $details["lastName"];
         $newUser->email = $details["email"];
         $newUser->password = $details["password"];
         $newUser->isAdmin = $details["isAdmin"];
-        $newUser->isLoggedIn  = $details["isLoggedIn"];
         return $newUser;
+    }
+    public function getAllDetails() {
+        return get_user_details_from_id($this->userID);
     }
     public function listGroups() {
         return get_groups_from_user($this->userID);
     }
     public function joinGroup($groupID) {
-        join_group($this->userID, $groupID);
+        add_user_to_group($this->userID, $groupID);
     }
     public function leaveGroup($groupID) {
         remove_user_from_group($this->userID, $groupID);
@@ -53,16 +51,79 @@ class User {
     public function isAdmin() {
         return $this->isAdmin;
     }
-    public function isLoggedIn() {
-        return $this->isLoggedIn;
+    public function authenticate($input_password) {
+        if ($this->password == $input_password) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
-    public function logOut() {
-        $this->isLoggedIn = false;
-        log_out($this->userID);
+}
+// although the design doc and the database function are made to return the restaurant ID, it may be more useful to return the
+// restaurant object here. I'll leave it returning the object for now.
+class Restaurant {
+    private $restaurantID = -16;
+    private $restaurantName = "";
+    private $cuisineType = "";
+    private $address = "";
+    private $hoursOpen = "";
+    private $menu = "";
+    public static function createNewRestaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu, $userID) {
+        $add_attempt = add_restaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu, $userID);
+        if (!($add_attempt === false)) {
+            $newRestaurant = new Restaurant();
+            $newRestaurant->restaurantName = $restaurantName;
+            $newRestaurant->cuisineType = $cuisineType;
+            $newRestaurant->address = $address;
+            $newRestaurant->hoursOpen = $hoursOpen;
+            $newRestaurant->menu = $menu;
+            return $newRestaurant;
+        }
     }
-    public function logIn() {
-        $this->isLoggedIN = true;
-        log_in($this->userID);
+    public static function retrieveRestaurant($restaurantID) {
+        $newRestaurant = new User();
+        
+        $newRestaurant->userID = $userID;
+        $details = get_restaurant_details_from_id($restaurantID);
+        $newRestaurant->restaurantName = $details["restaurantName"];
+        $newRestaurant->cuisineType = $details["cuisineType"];
+        $newRestaurant->address = $details["address"];
+        $newRestaurant->hoursOpen = $details["hoursOpen"];
+        $newRestaurant->menu = $details["menu"];
+        return $newRestaurant;
+    }
+    public function getAllDetails() {
+        return get_restaurant_details_from_id($this->restaurantID);
+    }
+    public function editDetails($restaurantName, $cuisineType, $address, $hoursOpen, $menu) {
+        edit_restaurant_details($this->restaurantID, $restaurantName, $cuisineType, $address, $hoursOpen, $menu);
+    }
+}
+class Search {
+    
+    private $pattern;
+    private $resultIDs = false;
+    private $resultDetails = false;
+    function __construct($pattern) {
+        $this->pattern = $pattern;
+    }
+    // check if we haven't already gotten a result for this before running the query
+    public function getIDs() {
+    
+        if ($this->resultIDs == false) {
+            $this->resultIDs = get_restaurant_id_from_pattern($this->pattern);
+        }
+        return $this->resultIDs;
+    }
+    
+    // same as above. this will return an array of arrays, where the first "layer" of arrays
+    // will be a restaurant, and each element of each array will be the restaurant details
+    public function getDetails() {
+        if ($this->resultDetails == false) {
+            $this->resultDetails = get_restaurant_details_from_pattern($this->pattern);
+        }
+        return $this->resultDetails;
     }
 }
 ?>

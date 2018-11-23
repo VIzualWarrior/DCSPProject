@@ -107,8 +107,7 @@ $log = "Logout.php";
         <a class="button_example" href="Suggest.php">Suggest</a>
         <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
         <br>
-        <?PHP if (isset($_SESSION['name'])){ echo "Hello, '$name'!";} ?>
-        </h1>
+        <?PHP if (isset($_SESSION['name']) && $_SESSION['type'] == 0){ echo "<span style ='color:white';> Hello, $name!</span>";} if (isset($_SESSION['name']) && $_SESSION['type'] == 1){ echo "<span style ='color:white';>Hello, Admin $name!</span>";} ?>        </h1>
         <br>
         <br>
         <br>
@@ -121,7 +120,10 @@ $log = "Logout.php";
         <br>
         <p style="color:white">Available Restaurants:</p>
         <br />
-        <p style="color:white">Add a restaurant (only admins will see this):</p>
+        <?PHP
+        if($_SESSION['type'] == 1){
+        echo '
+        <p style="color:white">Add a restaurant:</p>
         <input type="text" placeholder="Name" width="50">
         <br>
         <input type="text" placeholder="Cuisine Type" width="50">
@@ -132,9 +134,8 @@ $log = "Logout.php";
         <br />
         <br />
     </center>
+    ';}
+    ?>
 </body>
-<?php
 
-
-?>
 </html>
