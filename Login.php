@@ -120,9 +120,10 @@
          {
           session_start();
           $user = new User();
-          $user->retrieveUser($result['userID']);
+          $user::retrieveUser($result['userID']);
           $_SESSION['login'] = true;
           $_SESSION['user'] = $user;
+          $_SESSION['id'] = $result['userID'];
           $_SESSION['name'] = $result['userName'];
           $_SESSION['type'] = $result['isAdmin'];
           header("Location: HomePage.php"); 
@@ -140,10 +141,8 @@
         ?>
         <center>
         <h1 id="grad1">
-        <a class="button_example" href="Restaurant.php">Restaurants</a>
         <a class="button_example" href="Groups.php">Groups</a>
         <a class="button_example" href="Vote.php">Vote</a>
-        <a class="button_example" href="Suggest.php">Suggest</a>
         <a class="button_example" href="HomePage.php">Home</a>
         <br>
         </h1>

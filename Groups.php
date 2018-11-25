@@ -83,8 +83,11 @@
    
 </head>
 <body id="top-image">
-<?PHP
-include("class_definitions.php");
+<?PHP 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+include("GroupClass.php");
 session_start();
 $logstatus = "Log In";
 $log = "Login.php";
@@ -92,16 +95,21 @@ if (isset($_SESSION['login'])){
 $name = $_SESSION['name'];
 $logstatus = "Log Out";
 $log = "Logout.php";
-
+if (isset($_POST['groupCreate']))
+  {
+  $newGroup = new Group();
+  $newGroup::createNewGroup($_POST['groupCreate']);
+  $groupID = get_id_from_group_name($_POST['groupCreate']);
+  $userID = $_SESSION['id'];
+  $_SESSION['user']->joinGroup($userID, $groupID);
+  }
  }
 ?>
 
         <center>
         <h1 id="grad1">
-        <a class="button_example" href="Restaurant.php">Restaurants</a>
         <a class="button_example" href="HomePage.php">Home</a>
         <a class="button_example" href="Vote.php">Vote</a>
-        <a class="button_example" href="Suggest.php">Suggest</a>
         <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
         <br>
         <?PHP if (isset($_SESSION['name']) && $_SESSION['type'] == 0){ echo "<span style ='color:white';> Hello, $name!</span>";} if (isset($_SESSION['name']) && $_SESSION['type'] == 1){ echo "<span style ='color:white';>Hello, Admin $name!</span>";} ?>
@@ -112,16 +120,22 @@ $log = "Logout.php";
         <br>
         <br>
         <br>
+        <?PHP if(isset($_SESSION['login'])){echo 
+        '
         <p style="color:white">Group(s) you are currently in:</p><br>
         <br>
         <br>
         <br>
-        <br>
         <input type="text" name="groupSearch" placeholder="Search for a group here..."  size="100"><br>
-        </center>
+        <form method = "post" action = "Groups.php">
+        <input type="text" name="groupCreate" placeholder="Create a group"  size="100"><br>
+        <input type="Submit" value = "Add">
+        </form>
+        <br>
+        </center>';}
+        else{
+        echo '<p style = "color:white">You must be signed in to use this feature!</p>';
+            }
+        ?>
 </body>
-<?php
-
-
-?>
 </html>

@@ -96,13 +96,20 @@ $log = "Logout.php";
 
  }
 ?>
+<?PHP
+$newRestaurant;
+if(isset($_POST['name'], $_POST['cType'], $_POST['address'], $_POST['hours'], $_POST['menu']))
+{
+ $newRestaurant = new Restaurant();
+ $newRestaurant ::createNewRestaurant($_POST['name'], $_POST['cType'], $_POST['address'], $_POST['hours'], $_POST['menu']);
+}
+?>
+
 
         <center>
         <h1 id="grad1">
-        <a class="button_example" href="Restaurant.php">Restaurants</a>
         <a class="button_example" href="Groups.php">Groups</a>
         <a class="button_example" href="Vote.php">Vote</a>
-        <a class="button_example" href="Suggest.php">Suggest</a>
         <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
         <br>
         <?PHP if (isset($_SESSION['name']) && $_SESSION['type'] == 0){ echo "<span style ='color:white';> Hello, $name!</span>";} if (isset($_SESSION['name']) && $_SESSION['type'] == 1){ echo "<span style ='color:white';>Hello, Admin $name!</span>";} ?>
@@ -123,6 +130,32 @@ $log = "Logout.php";
         <input type="submit" value = "Search">
         </form>
         </center>
+        <?PHP
+        if($_SESSION['type'] == 1){
+        echo '
+        <center>
+        <p style="color:white">Add a restaurant:</p>
+        <form method = "post" action = "HomePage.php">
+        <input type="text" name = "name" placeholder="Name" width="50">
+        <br>
+        <input type="text" name = "cType" placeholder="Cuisine Type" width="50">
+        <br>
+        <input type="text" name = "address" placeholder="Address" width="50">
+        <br>
+        <input type="text" name = "hours" placeholder="Hours" width="50">
+        <br>
+        <input type="text" name = "menu" placeholder="Menu" width="50">
+        <input type="Submit" value = "Add">
+        </form>
+        </center>
+        <br />
+        <br />
+    </center>
+    ';}
+    ?>
+</body>
+
+</html>
 </body>
 
 </html>

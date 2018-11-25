@@ -104,7 +104,6 @@ $log = "Logout.php";
         <a class="button_example" href="HomePage.php">Home</a>
         <a class="button_example" href="Groups.php">Groups</a>
         <a class="button_example" href="Vote.php">Vote</a>
-        <a class="button_example" href="Suggest.php">Suggest</a>
         <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
         <br>
         <?PHP if (isset($_SESSION['name']) && $_SESSION['type'] == 0){ echo "<span style ='color:white';> Hello, $name!</span>";} if (isset($_SESSION['name']) && $_SESSION['type'] == 1){ echo "<span style ='color:white';>Hello, Admin $name!</span>";} ?>        </h1>
@@ -119,6 +118,7 @@ $log = "Logout.php";
         <br>
         <br>
         <p style="color:white">Available Restaurants:</p>
+        
         <br />
         <?PHP
         if($_SESSION['type'] == 1){

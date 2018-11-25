@@ -1,11 +1,10 @@
 <?php
 include("wrappers.php");
+// long function names 2: rebirth
 // user functions
 function create_user($userName, $firstName, $lastName, $email, $password, $isAdmin) {
-    do_query("INSERT INTO Users (userName, firstName, lastName, email, `password`, isAdmin)
-                VALUES ('$userName', '$firstName', '$lastName', '$email', '$password', $isAdmin) ");
-    return get_array("SELECT LAST_INSERT_ID()
-                        FROM Users");
+    return do_query_get_last_id("INSERT INTO Users (userName, firstName, lastName, email, `password`, isAdmin)
+                                    VALUES ('$userName', '$firstName', '$lastName', '$email', '$password', $isAdmin);");
 }
 function edit_user_details($userID, $userName, $firstName, $lastName, $email, $password, $isAdmin) {
     do_query("UPDATE Users 
@@ -25,12 +24,6 @@ function get_group_names_from_user($userID) {
                         WHERE groupID IN (SELECT groupID
                                             FROM GroupMembership
                                             WHERE userID = $userID)");
-}
-// get group name from groupID
-function get_group_name_from_id($groupID) {
-    return get_array("SELECT groupName
-                    FROM Groups
-                    WHERE groupID = $groupID");
 }
 // return all attributes of a user with given id
 function get_user_details_from_id($userID) {
@@ -62,6 +55,22 @@ function get_users_from_group($groupID) {
                         FROM GroupMembership 
                         WHERE groupID = $groupID");
 }
+function create_group($groupName) {
+    return do_query_get_last_id("INSERT INTO Groups (groupName)
+                        VALUES ('$groupName');");
+}
+// get group name from groupID
+function get_group_name_from_id($groupID) {
+    return get_array("SELECT groupName
+                    FROM Groups
+                    WHERE groupID = $groupID");
+}
+// get groupID from groupName
+function get_id_from_group_name($groupName) {
+	return get_array("SELECT groupID
+						FROM Groups
+                        WHERE groupName = '$groupName'");
+}
 // join group
 function add_user_to_group($userID, $groupID) {
     do_query("INSERT INTO GroupMembership (userID, groupID)
@@ -75,10 +84,8 @@ function add_user_to_group($userID, $groupID) {
 // restaurant functions
 function add_restaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu, $userID) {
     if (is_admin($userID)) {
-        do_query("INSERT INTO Restaurants (restaurantName, cuisineType, `address`, hoursOpen, menu)
-                    VALUES ('$restaurantName', '$cuisineType', '$address', '$hoursOpen', '$menu') ");
-        return get_array("SELECT LAST_INSERT_ID()
-                            FROM Restaurants");
+        return do_query_get_last_id("INSERT INTO Restaurants (restaurantName, cuisineType, `address`, hoursOpen, menu)
+                            VALUES ('$restaurantName', '$cuisineType', '$address', '$hoursOpen', '$menu');");
     }
     else{
         return false;
@@ -158,9 +165,9 @@ function get_details_for_option($pollOptionID) {
 // casts a vote for a specified poll option, return voteID
 function cast_vote($pollOptionID, $userID) {
     do_query("INSERT INTO Vote (`pollOptionID`, `userID`)
-                VALUES ($pollOptionID, $userID)");
-    return get_array("SELECT LAST_INSERT_ID()
-                        FROM Vote");
+                VALUES ($pollOptionID, $userID);");
+    return do_query_get_last_id("INSERT INTO Vote (`pollOptionID`, `userID`)
+                                    VALUES ($pollOptionID, $userID);");
 }
 // get list of users who have voted
 function get_users_voted($pollID) {

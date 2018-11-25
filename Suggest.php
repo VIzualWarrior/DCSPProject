@@ -98,7 +98,6 @@ $log = "Logout.php";
 
         <center>
         <h1 id="grad1">
-        <a class="button_example" href="Restaurant.php">Restaurants</a>
         <a class="button_example" href="Groups.php">Groups</a>
         <a class="button_example" href="Vote.php">Vote</a>
         <a class="button_example" href="HomePage.php">Home</a>

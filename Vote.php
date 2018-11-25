@@ -84,7 +84,10 @@
 </head>
 <body id="top-image">
 <?PHP
-include("class_definitions.php");
+ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+include("PollClass.php");
 session_start();
 $logstatus = "Log In";
 $log = "Login.php";
@@ -98,10 +101,8 @@ $log = "Logout.php";
 
         <center>
         <h1 id="grad1">
-        <a class="button_example" href="Restaurant.php">Restaurants</a>
         <a class="button_example" href="Groups.php">Groups</a>
         <a class="button_example" href="HomePage.php">Home</a>
-        <a class="button_example" href="Suggest.php">Suggest</a>
         <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
         <br>
         <?PHP if (isset($_SESSION['name']) && $_SESSION['type'] == 0){ echo "<span style ='color:white';> Hello, $name!</span>";} if (isset($_SESSION['name']) && $_SESSION['type'] == 1){ echo "<span style ='color:white';>Hello, Admin $name!</span>";} ?>
@@ -112,16 +113,18 @@ $log = "Logout.php";
         <br>
         <br>
         <br>
-        <p style="color:white">Start a poll (won't show up if a poll is started):</p><br>
-        <p style="color:white">Current poll (Won't show up if a poll hasn't been started):</p><br>
-        <br>
-        <br>
-        <br>
-        <br>
         </center>
+        <?PHP
+        if(isset($_SESSION['login'])){
+        echo '
+        <center>
+        <p style="color:white">Start a poll:</p><br>
+        <p style="color:white">Current poll:</p></center><br>
+        <br>
+        <br>
+        <br>
+        <br>';}
+        else{echo "<center><span style ='color:white'>You must be signed in to use this feature!</span></center>";}
+        ?>
 </body>
-<?php
-
-
-?>
 </html>
