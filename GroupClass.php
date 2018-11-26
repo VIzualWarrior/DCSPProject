@@ -20,6 +20,7 @@ class Group{
 		return $newGroup;
 	}
 	public static function retrieveGroupByName($groupName) {
+    echo "$groupName";
 		
 		return Group::retrieveGroup(get_id_from_group_name($groupName));
 		
