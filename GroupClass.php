@@ -2,7 +2,7 @@
 <?php
 include("class_definitions.php");
 class Group{
-    private $groupID = -16; 
+	private $groupID = -16; 
 	private $groupName = "";
 		
 	public static function createNewGroup($groupName) {
@@ -21,11 +21,8 @@ class Group{
 	}
 	public static function retrieveGroupByName($groupName) {
 		
-		$newGroup = new Group();
-		$id = get_id_from_group_name($groupName);
-		$newGroup->groupName = $groupName;
-		$newGroup->groupID = $id;
-		return $newGroup;
+		return Group::retrieveGroup(get_id_from_group_name($groupName));
+		
 	}
 	
 	//	Returns a list of userIDs for users in the group.
@@ -42,7 +39,7 @@ class Group{
 	}
 	//	add user to group by userID
 	public function addUser($userID) {
-        add_user_to_group(userID, $this->groupID);
+        add_user_to_group($userID, $this->groupID);
     }
 	//	kick user from group by userID
     public function kickUser($userID) {

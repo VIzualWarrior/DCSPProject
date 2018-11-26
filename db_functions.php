@@ -61,15 +61,19 @@ function create_group($groupName) {
 }
 // get group name from groupID
 function get_group_name_from_id($groupID) {
-    return get_array("SELECT groupName
-                    FROM Groups
-                    WHERE groupID = $groupID");
+    $result = get_array("SELECT groupName
+                        FROM Groups
+                        WHERE groupID = $groupID");
+					
+	return $result[0];
 }
 // get groupID from groupName
 function get_id_from_group_name($groupName) {
-	return get_array("SELECT groupID
+	$result = get_array("SELECT groupID
 						FROM Groups
                         WHERE groupName = '$groupName'");
+    
+    return $result[0];
 }
 // join group
 function add_user_to_group($userID, $groupID) {

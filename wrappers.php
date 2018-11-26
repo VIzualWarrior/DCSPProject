@@ -24,7 +24,7 @@
     function do_query_get_last_id($stmt) {
         $conn = open_connection();
         $conn->query($stmt) or trigger_error("Query Failed! SQL: $stmt - Error: ".mysqli_error($conn), E_USER_ERROR);
-        return $conn->insert_id;
+        return $conn->insert_id[0];
     }
     // performs a query that doesn't expect any output
     function do_query($stmt) {
@@ -40,11 +40,11 @@
         
         return $result->fetch_array();
     }
-    function check_password($userName, $token) {
+    function check_password($userID, $token) {
         $conn = open_connection();
         $result = $conn->query("SELECT *
                                     FROM Users
-                                    WHERE userName = '$userName' AND
+                                    WHERE userName = '$userID' AND
                                     `password` = '$token'");
         return $result;
     }

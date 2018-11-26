@@ -42,12 +42,6 @@ class User {
     public function listGroups() {
         return get_groups_from_user($this->userID);
     }
-    public function joinGroup($groupID) {
-        add_user_to_group($this->userID, $groupID);
-    }
-    public function leaveGroup($groupID) {
-        remove_user_from_group($this->userID, $groupID);
-    }
     public function isAdmin() {
         return $this->isAdmin;
     }
@@ -58,12 +52,7 @@ class User {
         else {
             return false;
         }
-
     }
-
-    public function id() {
-		return $this->groupID;
-	}
 }
 // although the design doc and the database function are made to return the restaurant ID, it may be more useful to return the
 // restaurant object here. I'll leave it returning the object for now.
@@ -74,8 +63,8 @@ class Restaurant {
     private $address = "";
     private $hoursOpen = "";
     private $menu = "";
-    public static function createNewRestaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu) {
-        $add_attempt = add_restaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu);
+    public static function createNewRestaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu, $userID) {
+        $add_attempt = add_restaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu, $userID);
         if (!($add_attempt === false)) {
             $newRestaurant = new Restaurant();
             $newRestaurant->restaurantName = $restaurantName;

@@ -91,19 +91,31 @@ include("GroupClass.php");
 session_start();
 $logstatus = "Log In";
 $log = "Login.php";
+
 if (isset($_SESSION['login'])){
+$errormessage = "";
 $name = $_SESSION['name'];
 $logstatus = "Log Out";
 $log = "Logout.php";
 if (isset($_POST['groupCreate']))
   {
-  $newGroup = new Group();
-  $newGroup::createNewGroup($_POST['groupCreate']);
-  $groupID = get_id_from_group_name($_POST['groupCreate']);
-  $userID = $_SESSION['id'];
-  $_SESSION['user']->joinGroup($userID, $groupID);
+  $newGroup = Group::createNewGroup($_POST['groupCreate']);
+  $newGroup->addUser($_SESSION['id']);
   }
  }
+ if (isset($_POST['groupAdd']))
+{
+  $checkAdd = $_POST['groupAdd'];
+  $checkgroup = Group::retrieveGroupByName($checkAdd);
+  if ($checkgroup->name() == $_POST['groupAdd'])
+  {
+    $checkgroup->addUser($_SESSION['id']);
+  }
+  else
+  {
+    $errormessage = "Invalid group name!";
+  }
+}
 ?>
 
         <center>
@@ -126,10 +138,14 @@ if (isset($_POST['groupCreate']))
         <br>
         <br>
         <br>
-        <input type="text" name="groupSearch" placeholder="Search for a group here..."  size="100"><br>
+        <form method = "post" action = "Groups.php">
+        <input type="text" name="groupAdd" placeholder="Add yourself to a group"  size="100"><br>
+        <span style = "color:red";>'; echo $errormessage; echo '</span><br>
+        <input type="Submit" value = "Add">
+        </form>
         <form method = "post" action = "Groups.php">
         <input type="text" name="groupCreate" placeholder="Create a group"  size="100"><br>
-        <input type="Submit" value = "Add">
+        <input type="Submit" value = "Create">
         </form>
         <br>
         </center>';}
