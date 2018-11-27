@@ -8,6 +8,8 @@ class Group{
 	public static function createNewGroup($groupName) {
 		$newGroup = new Group();
 		$newGroup->groupName = $groupName;
+		$newGroup->groupID = $groupID;
+		
 		$newGroup->groupID = create_group($groupName);
 		return $newGroup;
 	}
@@ -20,15 +22,18 @@ class Group{
 		return $newGroup;
 	}
 	public static function retrieveGroupByName($groupName) {
-    echo "$groupName";
 		
 		return Group::retrieveGroup(get_id_from_group_name($groupName));
 		
 	}
 	
-	//	Returns a list of userIDs for users in the group.
-    public function getUsers() {
-    	return get_users_from_group($this->groupID);
+	//	Returns a list of userNames for users in this group
+    public function getUserNames() {
+    	return get_user_names_from_group($this->groupID);
+	}
+	// Returns an array of userIDs for users in this group
+	public function getUserIDs() {
+		return get_user_ids_from_group($this->groupID);
 	}
 	//	Get polls for group
 	public function getPolls() {

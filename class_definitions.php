@@ -12,16 +12,22 @@ class User {
     private $email = "";
     private $password = "";
     private $isAdmin = false;
+    // returns the user if created, otherwise FALSE. . . (i know that's not super cool to do)
     public static function createNewUser($userName, $firstName, $lastName, $email, $password, $isAdmin) {
-        $newUser = new User();
-        $newUser->userName = $userName;
-        $newUser->firstName = $firstName;
-        $newUser->lastName = $lastName;
-        $newUser->email = $email;
-        $newUser->password = $password;
-        $newUser->isAdmin = $isAdmin;
-        $newUser->userID = create_user($userName, $firstName, $lastName, $email, $password, $isAdmin);
-        return $newUser;
+        
+        if (is_username_available($userName)) {
+            $newUser = new User();
+            $newUser->userName = $userName;
+            $newUser->firstName = $firstName;
+            $newUser->lastName = $lastName;
+            $newUser->email = $email;
+            $newUser->password = $password;
+            $newUser->isAdmin = $isAdmin;
+            $newUser->userID = create_user($userName, $firstName, $lastName, $email, $password, $isAdmin);
+            return $newUser;
+        } else {
+            return FALSE;
+        }
     }
     public static function retrieveUser($userID) {
         $newUser = new User();
@@ -41,6 +47,12 @@ class User {
     }
     public function listGroups() {
         return get_groups_from_user($this->userID);
+    }
+    public function listAllPolls() {
+        return get_polls_for_user($this->userID);
+    }
+    public function listOpenPolls() {
+        return get_open_polls_for_user($this->userID);
     }
     public function isAdmin() {
         return $this->isAdmin;

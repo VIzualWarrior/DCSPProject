@@ -97,6 +97,7 @@ $errormessage = "";
 $name = $_SESSION['name'];
 $logstatus = "Log Out";
 $log = "Logout.php";
+$grouplist = get_group_names_from_user($_SESSION['id']);
 if (isset($_POST['groupCreate']))
   {
   $newGroup = Group::createNewGroup($_POST['groupCreate']);
@@ -134,8 +135,9 @@ if (isset($_POST['groupCreate']))
         <br>
         <?PHP if(isset($_SESSION['login'])){echo 
         '
-        <p style="color:white">Group(s) you are currently in:</p><br>
-        <br>
+        <p style="color:white">Group(s) you are currently in:</p><br>';
+        foreach($grouplist as $group){echo '<span style="color:white">', $group, '</span><br>';};
+        echo  '<br>
         <br>
         <br>
         <form method = "post" action = "Groups.php">
@@ -143,7 +145,7 @@ if (isset($_POST['groupCreate']))
         <span style = "color:red";>'; echo $errormessage; echo '</span><br>
         <input type="Submit" value = "Add">
         </form>
-        <form method = "post" action = "Groups.php">
+        <form method = "post" action = "Groups.php" onsubmit = "window.location.hrefwindow.location.href">
         <input type="text" name="groupCreate" placeholder="Create a group"  size="100"><br>
         <input type="Submit" value = "Create">
         </form>
