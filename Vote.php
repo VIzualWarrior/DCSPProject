@@ -166,7 +166,7 @@ if (isset($_SESSION['login'])) {
         foreach ($restaurantlist as $restaurant) {
             echo '<option>', $restaurant, '</option>';
         }
-        echo '</select><br><input type ="submit" value = "Start"></form></center>';
+        echo '<select><br><input type ="submit" value = "Start"></form></center>';
     }
     if ($PollOpen == 1) {
         echo '<center><p style="color:white">Current poll:</p><br>';

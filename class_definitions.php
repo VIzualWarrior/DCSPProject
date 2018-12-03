@@ -75,8 +75,8 @@ class Restaurant {
     private $address = "";
     private $hoursOpen = "";
     private $menu = "";
-    public static function createNewRestaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu, $userID) {
-        $add_attempt = add_restaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu, $userID);
+    public static function createNewRestaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu) {
+        $add_attempt = add_restaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu);
         if (!($add_attempt === false)) {
             $newRestaurant = new Restaurant();
             $newRestaurant->restaurantName = $restaurantName;

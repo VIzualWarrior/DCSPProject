@@ -95,6 +95,10 @@ if (isset($_SESSION['login'])){
 $name = $_SESSION['name'];
 $logstatus = "Log Out";
 $log = "Logout.php";
+if(isset($_POST['name'], $_POST['cType'], $_POST['hours'], $_POST['address'],$_POST['menu'])){
+ $newRestaurant = new Restaurant();
+ $newRestaurant::createNewRestaurant($_POST['name'], $_POST['cType'], $_POST['hours'], $_POST['address'],$_POST['menu']);
+}
 
  }
 ?>
@@ -123,14 +127,18 @@ $log = "Logout.php";
         <?PHP
         if($_SESSION['type'] == 1){
         echo '
+        <form method = "post" action = "Restaurant.php">
         <p style="color:white">Add a restaurant:</p>
-        <input type="text" placeholder="Name" width="50">
+        <input type="text" placeholder="Name" name = "name" width="50">
         <br>
-        <input type="text" placeholder="Cuisine Type" width="50">
+        <input type="text" placeholder="Cuisine Type" name = "cType" width="50">
         <br>
-        <input type="text" placeholder="Hours" width="50">
+        <input type="text" placeholder="Address"  name = "address" width="50">
         <br>
-        <input type="text" placeholder="User ID" width="50">
+        <input type="text" placeholder="Hours"  name = "hours" width="50">
+        <br>
+        <input type="text" placeholder="Menu"  "name = "menu" width="50">
+        </form>
         <br />
         <br />
     </center>

@@ -85,6 +85,9 @@
 <body id="top-image">
 
 <?PHP
+ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
 include("class_definitions.php");
 session_start();
 $logstatus = "Log In";
@@ -101,7 +104,7 @@ $newRestaurant;
 if(isset($_POST['name'], $_POST['cType'], $_POST['address'], $_POST['hours'], $_POST['menu']))
 {
  $newRestaurant = new Restaurant();
- $newRestaurant ::createNewRestaurant($_POST['name'], $_POST['cType'], $_POST['address'], $_POST['hours'], $_POST['menu']);
+ $newRestaurant::createNewRestaurant($_POST['name'], $_POST['cType'], $_POST['address'], $_POST['hours'], $_POST['menu']);
 }
 ?>
 
@@ -123,8 +126,6 @@ if(isset($_POST['name'], $_POST['cType'], $_POST['address'], $_POST['hours'], $_
         <p style="color:white">Welcome to the Food Critics!</p><br>
         <br>
         <br>
-        <br>
-        <br>
         <form action="searchResult.php" method="post">
         <input type="text" name="query" placeholder="Search for a restaurant here..."  size="100"><br>
         <input type="submit" value = "Search">
@@ -134,20 +135,20 @@ if(isset($_POST['name'], $_POST['cType'], $_POST['address'], $_POST['hours'], $_
         if($_SESSION['type'] == 1){
         echo '
         <center>
-        <p style="color:white">Add a restaurant:</p>
         <form method = "post" action = "HomePage.php">
-        <input type="text" name = "name" placeholder="Name" width="50">
+        <p style="color:white">Add a restaurant:</p>
+        <input type="text" placeholder="Name" name = "name" width="50">
         <br>
-        <input type="text" name = "cType" placeholder="Cuisine Type" width="50">
+        <input type="text" placeholder="Cuisine Type" name = "cType" width="50">
         <br>
-        <input type="text" name = "address" placeholder="Address" width="50">
+        <input type="text" placeholder="Address"  name = "address" width="50">
         <br>
-        <input type="text" name = "hours" placeholder="Hours" width="50">
+        <input type="text" placeholder="Hours"  name = "hours" width="50">
         <br>
-        <input type="text" name = "menu" placeholder="Menu" width="50">
-        <input type="Submit" value = "Add">
+        <input type="text" placeholder="Menu"  "name = "menu" width="50">
+        <br>
+        <input type = "submit" value = "Add">
         </form>
-        </center>
         <br />
         <br />
     </center>
