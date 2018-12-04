@@ -125,16 +125,9 @@ function remove_user_from_group($userID, $groupID) {
 }
 
 // restaurant functions
-function add_restaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu, $userID) {
-    if (is_admin($userID)) {
-        return do_query_get_last_id("INSERT INTO Restaurants (restaurantName, cuisineType, `address`, hoursOpen, menu)
+function add_restaurant($restaurantName, $cuisineType, $address, $hoursOpen, $menu) {
+        return do_query_get_last_id("INSERT INTO Restaurants (restaurantName, cuisineType, address, hoursOpen, menu)
                             VALUES ('$restaurantName', '$cuisineType', '$address', '$hoursOpen', '$menu');");
-    }
-
-    else{
-        return false;
-    }
-
 }
 
 function get_restaurant_details_from_id($restaurantID) {

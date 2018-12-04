@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><title>Welcome!</title>
+<head><title>Title Goes Here</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -24,6 +24,19 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+        }
+
+        .button {
+            background-color: blue;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
         }
 
         .button_example {
@@ -84,79 +97,32 @@
 </head>
 <body id="top-image">
 
-<?PHP
-ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
-include("class_definitions.php");
-session_start();
-$logstatus = "Log In";
-$log = "Login.php";
-if (isset($_SESSION['login'])){
-$name = $_SESSION['name'];
-$logstatus = "Log Out";
-$log = "Logout.php";
-if(isset($_POST['name']) && isset($_POST['cType']) && isset($_POST['hours']) && isset($_POST['address']) && isset($_POST['menu'])){
-        Restaurant::createNewRestaurant($_POST['name'], $_POST['cType'], $_POST['hours'], $_POST['address'],$_POST['menu']);
-    }
- }
-?>
-
-
         <center>
         <h1 id="grad1">
-        <a class="button_example" href="Groups.php">Groups</a>
-        <a class="button_example" href="Vote.php">Vote</a>
-        <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
-        <?PHP
-        if($log == "Login.php")
-          {
-         echo "<a class = 'button_example' href = 'Register.php'>Register</a>";
-          }
-         ?>
+        <a class="button_example" href="mockup2.php">Test</a>
+        <a class="button_example" href="#">TEST</a>
+        <a class="button_example" href="#">test</a>
+        <a class="button_example" href="#">Page</a>
+        <a class="button_example" href="#">page</a>
+        <a class="button_example" href="#">PAGE</a>
         <br>
-        <?PHP if (isset($_SESSION['name']) && $_SESSION['type'] == 0){ echo "<span style ='color:white';> Hello, $name!</span>";} if (isset($_SESSION['name']) && $_SESSION['type'] == 1){ echo "<span style ='color:white';>Hello, Admin $name!</span>";} ?>
+        <input type="text" placeholder="username" width="50">
+        <input type="text" placeholder="password" width="50">
         </h1>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <p style="color:white">Welcome to the Food Critics!</p><br>
-        <br>
-        <br>
-        <form action="searchResult.php" method="post">
-        <input type="text" name="query" placeholder="Search for a restaurant here..."  size="100"><br>
-        <input type="submit" value = "Search">
-        </form>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        <a class="button">ipsum lorem docet.</a><br>
+        <a class="button">ipsum lorem docet.</a><br>
+        <a class="button">ipsum lorem docet.</a><br>
+        <a class="button">ipsum lorem docet.</a><br>
         </center>
-        <?PHP
-        if($_SESSION['type'] == 1){
-        echo '
-        <center>
-        <form method = "post" action = "HomePage.php">
-        <p style="color:white">Add a restaurant:</p>
-        <input type="text" placeholder="Name" name = "name" width="50">
-        <br>
-        <input type="text" placeholder="Cuisine Type" name = "cType" width="50">
-        <br>
-        <input type="text" placeholder="Address"  name = "address" width="50">
-        <br>
-        <input type="text" placeholder="Hours"  name = "hours" width="50">
-        <br>
-        <input type="text" placeholder="Menu"  name = "menu" width="50">
-        <br>
-        <input type = "submit" value = "Add">
-        </form>
-        <br />
-        <br />
-    </center>
-    ';}
-    ?>
 </body>
+<?php
 
-</html>
-</body>
 
+?>
 </html>

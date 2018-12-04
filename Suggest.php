@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><title>Voting</title>
+<head><title>Suggestions</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -84,71 +84,24 @@
 </head>
 <body id="top-image">
 <?PHP
-ob_start();
-
-//ini_set('display_errors', 1);
-//        ini_set('display_startup_errors', 1);
-//       error_reporting(E_ALL);
-include("PollClass.php");
+include("class_definitions.php");
 session_start();
 $logstatus = "Log In";
 $log = "Login.php";
-$currentrestaurant = "";
 if (isset($_SESSION['login'])){
 $name = $_SESSION['name'];
 $logstatus = "Log Out";
 $log = "Logout.php";
-$grouplist = get_group_names_from_user($_SESSION['id']);
-$restaurantlist = get_restaurant_names();
-$PollOpen = 0;
-$user = User::retrieveUser($_SESSION['id']);
-if(count($user->listOpenPolls()) > 0)
-{
-$PollOpen = 1;
-$currentpoll = Poll::retrievePoll($user->listOpenPolls()[0]);
-$currentrestaurant = $currentpoll->restaurant();
-$GroupVotingID = $currentpoll->group();
-$GroupVoting = Group::retrieveGroup($GroupVotingID);
-$Memberlist = $GroupVoting->getUserNames();
-$MemberIDs = $GroupVoting->getUserIDs();
-$user_vote = "";
-if(in_array($_SESSION['name'], $currentpoll->userNamesVotedYes())){
- $user_vote = "<p style ='color:green'>YES</p>";
-}
-if(in_array($_SESSION['name'], $currentpoll->userNamesVotedNo())){
- $user_vote = "<p style ='color:red'>NO</p>";
-}
-if(in_array($_SESSION['name'], $currentpoll->userNamesNotVoted())){
- $user_vote = '<form method = "post"><input type = "submit" name = "Yes" value = "Yes"><input type ="submit"  name = "No" value ="No"></form>';
-}
-if (isset($_POST['Yes'])){
-$currentpoll->vote($_SESSION['id'], 1);
-}
-if (isset($_POST['No'])){
-$currentpoll->vote($_SESSION['id'], 0);
-}
-}
-if(isset($_POST['groupName'], $_POST['restaurant']))
-  {
-   $cPoll = new Poll();
-   $cGroup = Group::retrieveGroupByName($_POST['groupName']);
-   $cGroupid = $cGroup->id();
-   $cPoll::createNewPoll($cGroupid, $_POST['restaurant']);
-  }
+
  }
 ?>
 
         <center>
         <h1 id="grad1">
         <a class="button_example" href="Groups.php">Groups</a>
+        <a class="button_example" href="Vote.php">Vote</a>
         <a class="button_example" href="HomePage.php">Home</a>
         <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
-        <?PHP
-        if($log == "Login.php")
-          {
-         echo "<a class = 'button_example' href = 'Register.php'>Register</a>";
-          }
-         ?>
         <br>
         <?PHP if (isset($_SESSION['name']) && $_SESSION['type'] == 0){ echo "<span style ='color:white';> Hello, $name!</span>";} if (isset($_SESSION['name']) && $_SESSION['type'] == 1){ echo "<span style ='color:white';>Hello, Admin $name!</span>";} ?>
         </h1>
@@ -158,54 +111,19 @@ if(isset($_POST['groupName'], $_POST['restaurant']))
         <br>
         <br>
         <br>
-        </center>
-<?PHP
-if (isset($_SESSION['login'])) {
-    if ($PollOpen == 0) {
+        <br>
+        <br>
+        <br>
+        <br>
+        <input type="text" name="suggest" placeholder="Suggest a restaurant..."  size="100"><br>
+        <?PHP
+        if($_SESSION['type'] == 1){
         echo '
-        <center>
-        <p style="color:white">Start a poll:</p><br><form method = "post"><select name="groupName" value="groupName">';
-        foreach ($grouplist as $item) {
-            echo '<option>', $item, '</option>';
-        }
-        echo '</select><p style = "color:white"> will vote to go to </p><select name = "restaurant" value = "restaurant">';
-        foreach ($restaurantlist as $restaurant) {
-            echo '<option>', $restaurant, '</option>';
-        }
-        echo '<select><br><input type ="submit" value = "Start"></form></center>';
-    }
-    if ($PollOpen == 1) {
-        echo '<center><p style="color:white">Current poll:</p><br>';
-        echo '<p style = "color:white">Would you like to go to ', $currentrestaurant, '?</p><br>';
-        foreach ($Memberlist as $member) {
-            echo '<p style="color:white">', $member, '<br>';
-            if ($member == $_SESSION['name']) {
-                
-                echo $user_vote;
-                
-            } else {
-                if (in_array($member, $currentpoll->userNamesVotedYes())) {
-                    echo "<p style = 'color:green'>YES</p>";
-                }
-                if (in_array($member, $currentpoll->userNamesVotedNo())) {
-                    echo "<p style = 'color:red'>NO</p>";
-                }
-                if (in_array($member, $currentpoll->userNamesNotVoted())) {
-                    echo "<p style = 'color:white'>---</p>";
-                }
-            }
-            echo "</p><br>";
-        }
-        echo "</center>";
-    }
-    echo '<br>
-        <br>
-        <br>
-        <br>';
-} else {
-    echo "<center><span style ='color:white'>You must be signed in to use this feature!</span></center>";
-}
+        <p style="color:white">List of suggested restaurants:</p>
+        </center>';}?>
+</body>
+<?php
+
 
 ?>
-</body>
 </html>

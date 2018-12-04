@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head><title>Welcome!</title>
+<head>
+    <title>Register</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -48,7 +49,7 @@
             background-image: -o-linear-gradient(top, #a90329, #6d0019);
             background-image: linear-gradient(to bottom, #a90329, #6d0019);
             filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#a90329, endColorstr=#6d0019);
-                         }
+        }
 
             .button_example:hover {
                 border: 1px solid #450111;
@@ -60,7 +61,7 @@
                 background-image: -o-linear-gradient(top, #77021d, #3a000d);
                 background-image: linear-gradient(to bottom, #77021d, #3a000d);
                 filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#77021d, endColorstr=#3a000d);
-                                }
+            }
 
         #grad1 {
             height: 100px;
@@ -69,94 +70,68 @@
             background-color: red; /* For browsers that do not support gradients */
             background-image: linear-gradient(to bottom, #a90329, #6d0019); /* Standard syntax (must be last) */
             position: fixed;
-               }
+        }
 
-    #top-image { background: url("https://images.unsplash.com/photo-1536510233921-8e5043fce771?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22664491a6234b6907fc877cec156b7&w=1000&q=80");
-                 position: fixed; 
-                 width: 100%; 
-                 height: 100%; 
-                 background-repeat: no-repeat; 
-                 margin: 0;
-                 padding: 0; 
-                 background-size: calc(100% + 50px); }
+        #top-image {
+            background: url("https://images.unsplash.com/photo-1536510233921-8e5043fce771?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22664491a6234b6907fc877cec156b7&w=1000&q=80");
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            background-size: calc(100% + 50px);
+        }
     </style>
-   
+
 </head>
 <body id="top-image">
-
 <?PHP
+include("class_definitions.php");
+session_start();
 ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
-include("class_definitions.php");
-session_start();
-$logstatus = "Log In";
-$log = "Login.php";
-if (isset($_SESSION['login'])){
-$name = $_SESSION['name'];
-$logstatus = "Log Out";
-$log = "Logout.php";
-if(isset($_POST['name']) && isset($_POST['cType']) && isset($_POST['hours']) && isset($_POST['address']) && isset($_POST['menu'])){
-        Restaurant::createNewRestaurant($_POST['name'], $_POST['cType'], $_POST['hours'], $_POST['address'],$_POST['menu']);
-    }
- }
+
+if(isset($_POST['userName']) && isset($_POST['firstName']) && isset($_POST['lastName']) && isset($_POST['email']) && isset($_POST['password'])){
+    User::createNewUser($_POST['userName'], $_POST['firstName'], $_POST['lastName'], $_POST['email'],$_POST['password'], 0);
+}
 ?>
 
-
-        <center>
-        <h1 id="grad1">
+    <center>
+        <h1 id="grad1" style="color:white">
+        <a class="button_example" href="HomePage.php">Home</a>
         <a class="button_example" href="Groups.php">Groups</a>
         <a class="button_example" href="Vote.php">Vote</a>
-        <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
-        <?PHP
-        if($log == "Login.php")
-          {
-         echo "<a class = 'button_example' href = 'Register.php'>Register</a>";
-          }
-         ?>
         <br>
-        <?PHP if (isset($_SESSION['name']) && $_SESSION['type'] == 0){ echo "<span style ='color:white';> Hello, $name!</span>";} if (isset($_SESSION['name']) && $_SESSION['type'] == 1){ echo "<span style ='color:white';>Hello, Admin $name!</span>";} ?>
-        </h1>
+        <h1>Register</h1>
         <br>
         <br>
         <br>
         <br>
         <br>
         <br>
-        <p style="color:white">Welcome to the Food Critics!</p><br>
         <br>
         <br>
-        <form action="searchResult.php" method="post">
-        <input type="text" name="query" placeholder="Search for a restaurant here..."  size="100"><br>
-        <input type="submit" value = "Search">
-        </form>
-        </center>
-        <?PHP
-        if($_SESSION['type'] == 1){
-        echo '
-        <center>
-        <form method = "post" action = "HomePage.php">
-        <p style="color:white">Add a restaurant:</p>
-        <input type="text" placeholder="Name" name = "name" width="50">
         <br>
-        <input type="text" placeholder="Cuisine Type" name = "cType" width="50">
         <br>
-        <input type="text" placeholder="Address"  name = "address" width="50">
-        <br>
-        <input type="text" placeholder="Hours"  name = "hours" width="50">
-        <br>
-        <input type="text" placeholder="Menu"  name = "menu" width="50">
-        <br>
-        <input type = "submit" value = "Add">
+        <br />
+        <form method="post">
+            <input name="firstName" type="text" placeholder="First Name" width="50">
+            <br>
+            <input name="lastName" type="text" placeholder="Last Name" width="50">
+            <br>
+            <input name="userName" type="text" placeholder="Username" width="50">
+            <br>
+            <input name="email" type="text" placeholder="E-mail" width="50">
+            <br>
+            <input name="password" type="password" placeholder="Password" width="50">
+            <br>
+            <input type="submit" value="Submit">
         </form>
         <br />
         <br />
     </center>
-    ';}
-    ?>
-</body>
-
-</html>
 </body>
 
 </html>
