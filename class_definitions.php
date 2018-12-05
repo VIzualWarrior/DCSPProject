@@ -54,6 +54,9 @@ class User {
     public function listOpenPolls() {
         return get_open_polls_for_user($this->userID);
     }
+    public function listClosedPolls() {
+        return get_closed_polls_for_user($this->userID);
+    }
     public function isAdmin() {
         return $this->isAdmin;
     }

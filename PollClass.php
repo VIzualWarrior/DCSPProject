@@ -35,6 +35,14 @@ class Poll {
     public function setOpen() {  
         set_poll_open($this->pollID);
     }
+
+    public function groupName() {
+        return get_group_name_from_id($this->groupID);
+    }
+
+    public function id() {
+        return $this->pollID;
+    }
     
     //  Sets poll to closed
     public function setClosed() {    
@@ -73,6 +81,16 @@ class Poll {
             return TRUE;
         } else {
             return FALSE;
+        }
+    }
+
+    public function getResultString() {
+        $yes_votes = count(get_yes_votes_for_poll($this->pollID));
+        $no_votes = count(get_no_votes_for_poll($this->pollID));
+        if ($yes_votes >= $no_votes) {
+            return "Yes";
+        } else {
+            return "No";
         }
     }
     public function vote($userID, $value) {

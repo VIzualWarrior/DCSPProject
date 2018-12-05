@@ -105,7 +105,7 @@
          $user = '';
          if(isset($_POST["username"])) 
         {     
-         $name = $_POST["username"]; 
+         $name = strtolower($_POST['username']);
         
    
         if(isset($_POST["password"])) 
@@ -114,9 +114,10 @@
         }
           $query = check_password($name, $password);
           $result = $query->fetch_array();
+          }
           
 
-         if($result['userName'] == $name && $result['password'] == $password)
+         if($_POST['username'] != "" && strtolower($result['userName']) == $name && $result['password'] == $password)
          {
           session_start();
           $user = new User();
@@ -133,11 +134,14 @@
           
         else 
          {
+         if (isset($_POST["username"], $_POST["password"])){
          $errormessage = "Invalid username or password";
          $name = $_POST["username"];
          $pass = $_POST["password"];
          }
+         else{$name = ""; $pass = "";}
          }
+         
         ?>
         <center>
         <h1 id="grad1">

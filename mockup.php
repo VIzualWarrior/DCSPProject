@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><title>Welcome!</title>
+<head><title>Title Goes Here</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -84,42 +84,16 @@
 </head>
 <body id="top-image">
 
-<?PHP
-//ini_set('display_errors', 1);
-//        ini_set('display_startup_errors', 1);
-//        error_reporting(E_ALL);
-include("class_definitions.php");
-session_start();
-$logstatus = "Log In";
-$log = "Login.php";
-if (isset($_SESSION['login'])){
-$name = $_SESSION['name'];
-$logstatus = "Log Out";
-$log = "Logout.php";
-if(isset($_POST['name']) && isset($_POST['cType']) && isset($_POST['hours']) && isset($_POST['address']) && isset($_POST['menu'])){
-        Restaurant::createNewRestaurant($_POST['name'], $_POST['cType'], $_POST['hours'], $_POST['address'],$_POST['menu']);
-    }
- }
-?>
-
-
         <center>
         <h1 id="grad1">
-        <a class="button_example" href="Groups.php">Groups</a>
-        <a class="button_example" href="Vote.php">Vote</a>
-        <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
-         <?PHP
-        if($log == "Login.php")
-          {
-         echo "<a class = 'button_example' href = 'Register.php'>Register</a>";
-          }
-        if($log =="Logout.php")
-          {
-         echo "<a class = 'button_example' href = 'closedPolls.php'>Results</a>";
-          }
-         ?>
+        <a class="button_example" href="mockup2.php">Restaurants</a>
+        <a class="button_example" href="#">Groups</a>
+        <a class="button_example" href="#">Vote</a>
+        <a class="button_example" href="#">Suggest</a>
+        <a class="button_example" href="#">Log In</a>
         <br>
-        <?PHP if (isset($_SESSION['name']) && $_SESSION['type'] == 0){ echo "<span style ='color:white';> Hello, $name!</span>";} if (isset($_SESSION['name']) && $_SESSION['type'] == 1){ echo "<span style ='color:white';>Hello, Admin $name!</span>";} ?>
+        <input type="text" placeholder="username" width="50">
+        <input type="text" placeholder="password" width="50">
         </h1>
         <br>
         <br>
@@ -130,37 +104,13 @@ if(isset($_POST['name']) && isset($_POST['cType']) && isset($_POST['hours']) && 
         <p style="color:white">Welcome to the Food Critics!</p><br>
         <br>
         <br>
-        <form action="searchResult.php" method="post">
-        <input type="text" name="query" placeholder="Search for a restaurant here..."  size="100"><br>
-        <input type="submit" value = "Search">
-        </form>
+        <br>
+        <br>
+        <input type="text" name="ipsum lorem docet" placeholder="Search for a restaurant here..."  size="100"><br>
         </center>
-        <?PHP
-        if($_SESSION['type'] == 1){
-        echo '
-        <center>
-        <form method = "post" action = "HomePage.php">
-        <p style="color:white">Add a restaurant:</p>
-        <input type="text" placeholder="Name" name = "name" width="50">
-        <br>
-        <input type="text" placeholder="Cuisine Type" name = "cType" width="50">
-        <br>
-        <input type="text" placeholder="Address"  name = "address" width="50">
-        <br>
-        <input type="text" placeholder="Hours"  name = "hours" width="50">
-        <br>
-        <input type="text" placeholder="Menu"  name = "menu" width="50">
-        <br>
-        <input type = "submit" value = "Add">
-        </form>
-        <br />
-        <br />
-    </center>
-    ';}
-    ?>
 </body>
+<?php
 
-</html>
-</body>
 
+?>
 </html>

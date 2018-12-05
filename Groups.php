@@ -83,10 +83,11 @@
    
 </head>
 <body id="top-image">
-<?PHP 
+<?PHP
+ob_start(); 
 //ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
+//        ini_set('display_startup_errors', 1);
+//        error_reporting(E_ALL);
 include("GroupClass.php");
 session_start();
 $logstatus = "Log In";
@@ -94,27 +95,41 @@ $log = "Login.php";
 
 if (isset($_SESSION['login'])){
 $errormessage = "";
+$err2 = "";
 $name = $_SESSION['name'];
 $logstatus = "Log Out";
 $log = "Logout.php";
 $grouplist = get_group_names_from_user($_SESSION['id']);
 if (isset($_POST['groupCreate']))
   {
+  if(is_groupname_available($_POST['groupCreate'])== True){
   $newGroup = Group::createNewGroup($_POST['groupCreate']);
   $newGroup->addUser($_SESSION['id']);
+  header("Refresh:0");
+  }
+  else
+  $err2 = "Error: Group already exists!";
   }
  }
  if (isset($_POST['groupAdd']))
 {
+if (is_groupname_available($_POST['groupAdd']) == True || $_POST['groupAdd'] == "")
+  {
+  $errormessage = "Invalid group name!";
+  }
+  else
+  {
   $checkAdd = $_POST['groupAdd'];
   $checkgroup = Group::retrieveGroupByName($checkAdd);
   if ($checkgroup->name() == $_POST['groupAdd'])
   {
     $checkgroup->addUser($_SESSION['id']);
+    header("Refresh:0");
   }
   else
   {
     $errormessage = "Invalid group name!";
+  }
   }
 }
 ?>
@@ -124,10 +139,14 @@ if (isset($_POST['groupCreate']))
         <a class="button_example" href="HomePage.php">Home</a>
         <a class="button_example" href="Vote.php">Vote</a>
         <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
-        <?PHP
+         <?PHP
         if($log == "Login.php")
           {
          echo "<a class = 'button_example' href = 'Register.php'>Register</a>";
+          }
+        if($log =="Logout.php")
+          {
+         echo "<a class = 'button_example' href = 'closedPolls.php'>Results</a>";
           }
          ?>
         <br>
@@ -153,7 +172,8 @@ if (isset($_POST['groupCreate']))
         </form>
         <form method = "post" action = "Groups.php" onsubmit = "window.location.hrefwindow.location.href">
         <input type="text" name="groupCreate" placeholder="Create a group"  size="100"><br>
-        <input type="Submit" value = "Create">
+        <input type="Submit" value = "Create"><br>
+        <span style = "color:red";>'; echo $err2; echo '</span><br>
         </form>
         <br>
         </center>';}
