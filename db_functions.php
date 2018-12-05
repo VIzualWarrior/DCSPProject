@@ -84,11 +84,9 @@ function create_group($groupName) {
 }
 // get group name from groupID
 function get_group_name_from_id($groupID) {
-    $result = get_array("SELECT groupName
-                        FROM Groups
-                        WHERE groupID = $groupID");
-					
-	return $result[0];
+    return get_single_specific_value("SELECT groupName
+                                        FROM Groups
+                                        WHERE groupID = $groupID", "groupName");
 }
 // get groupID from groupName
 function get_id_from_group_name($groupName) {
@@ -210,14 +208,14 @@ function get_poll_details_from_id($pollID) {
 function get_yes_votes_for_poll($pollID) {
     return get_list_from_column("SELECT voteID 
                                     FROM Votes 
-                                    WHERE pollOptionID = $pollOptionID AND
+                                    WHERE pollID = $pollID AND
                                     `value` = 1;", "voteID");
 }
 // returns every no vote for specified poll
 function get_no_votes_for_poll($pollID) {
     return get_list_from_column("SELECT voteID 
                                     FROM Votes 
-                                    WHERE pollOptionID = $pollOptionID AND
+                                    WHERE pollID = $pollID AND
                                     `value` = 0;", "voteID");
 }
 // returns list of users who voted yes 

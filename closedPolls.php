@@ -71,6 +71,12 @@
             position: fixed;
                }
 
+               table {
+
+               font-size: 16px
+
+                      }
+
     #top-image { background: url("https://images.unsplash.com/photo-1536510233921-8e5043fce771?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22664491a6234b6907fc877cec156b7&w=1000&q=80");
                  position: fixed; 
                  width: 100%; 
@@ -100,8 +106,7 @@ if (isset($_SESSION['login'])){
     $log = "Logout.php";
     $user = User::retrieveUser($_SESSION['id']);
     $closedPolls = $user->listClosedPolls();
-    }
-
+    
 ?>
 
 <center>
@@ -109,6 +114,7 @@ if (isset($_SESSION['login'])){
 <a class="button_example" href="Groups.php">Groups</a>
 <a class="button_example" href="HomePage.php">Home</a>
 <a class="button_example" href=<?PHP echo $log; ?>><?PHP echo $logstatus; ?></a>
+</h1>
 <br>
 <br>
 <br>
@@ -121,20 +127,18 @@ if (isset($_SESSION['login'])){
 <br>
 <?PHP
 if(count($closedPolls) > 0) {
-
-        echo "<table style='color:white'><tr><th>Group</th><th>Poll No.</th><th>Restaurant</th><th>Result</th></tr>";
-
+        //echo "<table style='color:white'><tr><th>Group</th><th>Poll No.</th><th>Restaurant</th><th>Result</th></tr>";
         foreach($closedPolls as $pollID) {
             $newPoll = Poll::retrievePoll($pollID);
-
-            echo "<tr><td>" . $newPoll->groupName() . "</td><td>" . $newPoll->id() . "</td><td>" . $newPoll->restaurant() . "</td><td>" . $newPoll->getResultString() . "</td></tr>";
+            echo "<p style='color:white'>". $newPoll->groupName();
+            if($newPoll->getResult() == 1){echo " will go to ";}if($newPoll->getResult() == 0){echo " will NOT go to ";}
+            echo $newPoll->restaurant()."</p>";
         }
-
-        echo "</table>";
-    } if(!$closedPolls) {
+        //echo "</table>";
+    } else {
         echo "<p style='color:white'>No previous Polls to display.</p>";
     }
- if(!isset($_SESSION['login'])) {
+}else {
     echo "<p style='color:white'>Please login to view the results of previous Polls.</p>";
     }
     ?>
