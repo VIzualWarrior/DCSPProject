@@ -107,9 +107,9 @@ if(count($user->listOpenPolls()) > 0)
 $PollOpen = 1;
 $currentpoll = Poll::retrievePoll($user->listOpenPolls()[0]);
 $currentpoll->setOpen();
-if (!$currentpoll->userNamesNotVoted()){
+if (count($currentpoll->userNamesVotedYes()) + count($currentpoll->userNamesVotedNo()) == count($grouplist)){
   $currentpoll->setClosed();
-  header("closedPolls.php");
+  header("Vote.php");
 }
 }
 if(isset($_POST['groupName'], $_POST['restaurant']))
@@ -175,18 +175,18 @@ if (isset($_SESSION['login'])) {
     $user_vote = "";
     if(in_array($_SESSION['name'], $currentpoll->userNamesVotedYes())){
     $user_vote = "<p style ='color:green'>YES</p>";
-    }
-    if(in_array($_SESSION['name'], $currentpoll->userNamesVotedNo())){
+    } else if(in_array($_SESSION['name'], $currentpoll->userNamesVotedNo())){
     $user_vote = "<p style ='color:red'>NO</p>";
-    }
-    if(in_array($_SESSION['name'], $currentpoll->userNamesNotVoted())){
+    } else{
     $user_vote = '<form method = "post"><input type = "submit" name = "Yes" value = "Yes" action = "Vote.php"><input type ="submit"  name = "No" value ="No" action = "Vote.php"></form>';
     }
     if (isset($_POST['Yes'])){
     $currentpoll->vote($_SESSION['id'], 1);
+    header("Refresh:0");
     }
      if (isset($_POST['No'])){
      $currentpoll->vote($_SESSION['id'], 0);
+     header("Refresh:0");
      }
         echo '<center><p style="color:white">Current poll:</p><br>';
         echo '<p style = "color:white">Would you like to go to ', $currentrestaurant, '?</p><br>';
@@ -197,15 +197,13 @@ if (isset($_SESSION['login'])) {
                 echo $user_vote;
                 
             } else {
-                if (in_array($member, $currentpoll->userNamesVotedYes())) {
+               if (in_array($member, $currentpoll->userNamesVotedYes())) {
                     echo "<p style = 'color:green'>YES</p>";
-                }
-                if (in_array($member, $currentpoll->userNamesVotedNo())) {
+} else if (in_array($member, $currentpoll->userNamesVotedNo())) {
                     echo "<p style = 'color:red'>NO</p>";
-                }
-                if (in_array($member, $currentpoll->userNamesNotVoted())) {
+} else  {
                     echo "<p style = 'color:white'>---</p>";
-                }
+}
             }
             echo "</p><br>";
         }
